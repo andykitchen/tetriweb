@@ -53,8 +53,55 @@ var SHAPES [][]int = [][]int{
 	T_SHAPE, BLOCK_SHAPE, I_SHAPE,
 	RL_SHAPE, LL_SHAPE, S_SHAPE, Z_SHAPE}
 
+const SHAPE_WIDTH = 5
+const SHAPE_HEIGHT = 5
+
+const (
+  UP = iota
+  RIGHT
+  DOWN
+  LEFT
+)
+
 type Shape struct {
 	CurrentState []int
+  orientation int
+}
+
+func (s *Shape) GetCell(x int, y int) (k int) {
+  switch s.orientation {
+    case UP:
+      k = s.getShapeCell(x, y)
+    case RIGHT:
+      k = s.getShapeCell(-y, x) 
+    case DOWN:
+      k = s.getShapeCell(x, -y)
+    case LEFT:
+      k = s.getShapeCell(y, -x)
+  }
+
+  return
+}
+
+func (s *Shape) getShapeCell(x, y int) (int) {
+  //TODO: add bounds checking
+  return s.CurrentState[(x+2)*WIDTH + (y+2)]
+}
+
+func (s *Shape) RotateClockwise() {
+  if s.orientation == LEFT {
+    s.orientation = UP
+  } else {
+    s.orientation += 1
+  }
+}
+
+func (s *Shape) RotateCounterClockwise() {
+  if s.orientation == UP {
+    s.orientation = LEFT
+  } else {
+    s.orientation -= 1
+  }
 }
 
 func (s1 *Shape) SameAs(s2 *Shape) (result bool) {
@@ -76,3 +123,5 @@ func NewShape(shape []int) (s *Shape) {
 	s.CurrentState = shape
 	return
 }
+
+
