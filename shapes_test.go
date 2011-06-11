@@ -153,3 +153,56 @@ func TestRotateClockwiseFULLCIRCLE(t *testing.T) {
   }
 }
 
+func TestRotateCounterClockwiseLEFT(t *testing.T) {
+  expected := NewShape([]int{
+    0, 0, 0, 0, 0,
+	  0, 0, 1, 0, 0,
+	  0, 1, 1, 0, 0,
+	  0, 0, 1, 0, 0,
+	  0, 0, 0, 0, 0})
+
+  s := NewShape(T_SHAPE)
+
+  s.RotateCounterClockwise()
+  
+  if s.Orientation != LEFT {
+    t.Errorf("Invalid orientation")
+  }
+  
+  fmt.Printf(s.String() + "\n")
+
+  result := s.SameAs(expected)
+  if result != true {
+    fmt.Printf(s.String())
+    t.Errorf("Invalid rotate clockwise")
+  }
+}
+
+func TestRotateCounterClockwiseFULLCIRCLE(t *testing.T) {
+  expected := NewShape([]int{
+    0, 0, 0, 0, 0,
+	  0, 0, 1, 0, 0,
+	  0, 1, 1, 1, 0,
+	  0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0})
+
+  s := NewShape(T_SHAPE)
+
+  s.RotateCounterClockwise()
+  s.RotateCounterClockwise()
+  s.RotateCounterClockwise()
+  s.RotateCounterClockwise()
+  
+  if s.Orientation != UP {
+    t.Errorf("Invalid orientation")
+  }
+  
+  fmt.Printf(s.String() + "\n")
+
+  result := s.SameAs(expected)
+  if result != true {
+    fmt.Printf(s.String())
+    t.Errorf("Invalid rotate clockwise")
+  }
+}
+
