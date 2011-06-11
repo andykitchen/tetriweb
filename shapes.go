@@ -1,7 +1,7 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
   "strconv"
 )
 var T_SHAPE []int = []int{
@@ -71,7 +71,7 @@ const (
 
 type Shape struct {
 	baseState []int
-  orientation int
+  Orientation int
 }
 
 func (s *Shape) CurrentState() (result []int) {
@@ -81,7 +81,7 @@ func (s *Shape) CurrentState() (result []int) {
     x := i % SHAPE_WIDTH
     y := (i / SHAPE_WIDTH)
 
-    fmt.Printf(strconv.Itoa(x) + ", " + strconv.Itoa(y) + "\n")
+    //fmt.Printf(strconv.Itoa(x) + ", " + strconv.Itoa(y) + "\n")
     result[i] = s.GetCell( SHAPE_X_OFFSET + x,
       SHAPE_Y_OFFSET + y)
   }
@@ -89,16 +89,31 @@ func (s *Shape) CurrentState() (result []int) {
   return
 }
 
+func (s *Shape) String() (res string) {
+  currentState := s.CurrentState()
+
+	for i := 0; i < SHAPE_HEIGHT; i++ {
+		for j := 0; j < SHAPE_WIDTH; j++ {
+			res += strconv.Itoa(currentState[i*SHAPE_WIDTH+j])
+		}
+		
+		res += "\n"
+	}
+	
+	return
+  
+}
+
 func (s *Shape) GetCell(x int, y int) (k int) {
-  switch s.orientation {
+  switch s.Orientation {
     case UP:
       k = s.getShapeCell(x, y)
     case RIGHT:
-      k = s.getShapeCell(-y, x) 
+      k = s.getShapeCell(y, -x) 
     case DOWN:
       k = s.getShapeCell(x, -y)
     case LEFT:
-      k = s.getShapeCell(y, -x)
+      k = s.getShapeCell(-y, x)
   }
 
   return
@@ -109,23 +124,23 @@ func (s *Shape) getShapeCell(x, y int) (int) {
   if x < -2 || x > 2 { return 0 }
   if y < -2 || y > 2 { return 0 }
   index := (x+2) + (y+2)*SHAPE_WIDTH
-  fmt.Printf(strconv.Itoa(index) + "\n")
+  //fmt.Printf(strconv.Itoa(index) + "\n")
   return s.baseState[index]
 }
 
 func (s *Shape) RotateClockwise() {
-  if s.orientation == LEFT {
-    s.orientation = UP
+  if s.Orientation == LEFT {
+    s.Orientation = UP
   } else {
-    s.orientation += 1
+    s.Orientation += 1
   }
 }
 
 func (s *Shape) RotateCounterClockwise() {
-  if s.orientation == UP {
-    s.orientation = LEFT
+  if s.Orientation == UP {
+    s.Orientation = LEFT
   } else {
-    s.orientation -= 1
+    s.Orientation -= 1
   }
 }
 

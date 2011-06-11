@@ -2,7 +2,7 @@ package main
 
 import (
 	"testing"
-	//"fmt"
+	"fmt"
 	//"strconv"
 )
 
@@ -47,7 +47,7 @@ func TestNewShape(t *testing.T) {
 	}
 }
 
-func TestRotateClockwise(t *testing.T) {
+func TestRotateClockwiseRIGHT(t *testing.T) {
   expected := NewShape([]int{
     0, 0, 0, 0, 0,
 	  0, 0, 1, 0, 0,
@@ -58,9 +58,98 @@ func TestRotateClockwise(t *testing.T) {
   s := NewShape(T_SHAPE)
 
   s.RotateClockwise()
+  
+  if s.Orientation != RIGHT {
+    t.Errorf("Invalid orientation")
+  }
+  
+  fmt.Printf(s.String() + "\n")
 
   result := s.SameAs(expected)
   if result != true {
+    fmt.Printf(s.String())
     t.Errorf("Invalid rotate clockwise")
   }
 }
+
+func TestRotateClockwiseDOWN(t *testing.T) {
+  expected := NewShape([]int{
+    0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0,
+	  0, 1, 1, 1, 0,
+	  0, 0, 1, 0, 0,
+	  0, 0, 0, 0, 0})
+
+  s := NewShape(T_SHAPE)
+
+  s.RotateClockwise()
+  s.RotateClockwise()
+  
+  if s.Orientation != DOWN {
+    t.Errorf("Invalid orientation")
+  }
+  
+  fmt.Printf(s.String() + "\n")
+
+  result := s.SameAs(expected)
+  if result != true {
+    fmt.Printf(s.String())
+    t.Errorf("Invalid rotate clockwise")
+  }
+}
+
+func TestRotateClockwiseLEFT(t *testing.T) {
+  expected := NewShape([]int{
+    0, 0, 0, 0, 0,
+	  0, 0, 1, 0, 0,
+	  0, 1, 1, 0, 0,
+	  0, 0, 1, 0, 0,
+	  0, 0, 0, 0, 0})
+
+  s := NewShape(T_SHAPE)
+
+  s.RotateClockwise()
+  s.RotateClockwise()
+  s.RotateClockwise()
+  
+  if s.Orientation != LEFT {
+    t.Errorf("Invalid orientation")
+  }
+  
+  fmt.Printf(s.String() + "\n")
+
+  result := s.SameAs(expected)
+  if result != true {
+    fmt.Printf(s.String())
+    t.Errorf("Invalid rotate clockwise")
+  }
+}
+
+func TestRotateClockwiseFULLCIRCLE(t *testing.T) {
+  expected := NewShape([]int{
+    0, 0, 0, 0, 0,
+	  0, 0, 1, 0, 0,
+	  0, 1, 1, 1, 0,
+	  0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0})
+
+  s := NewShape(T_SHAPE)
+
+  s.RotateClockwise()
+  s.RotateClockwise()
+  s.RotateClockwise()
+  s.RotateClockwise()
+  
+  if s.Orientation != UP {
+    t.Errorf("Invalid orientation")
+  }
+  
+  fmt.Printf(s.String() + "\n")
+
+  result := s.SameAs(expected)
+  if result != true {
+    fmt.Printf(s.String())
+    t.Errorf("Invalid rotate clockwise")
+  }
+}
+
