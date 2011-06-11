@@ -1,2 +1,6 @@
 _go_.6
 tetriweb
+*.swp
+*.6
+*.out
+_test*.go
