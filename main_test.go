@@ -17,12 +17,17 @@ func TestBoard(t *testing.T) {
 
 func TestRowFull(t *testing.T) {
   b := new(Board)
-  s := b.String()
 
-	
+	for j := 0; j < WIDTH; j++ {
+		b.setCell(2, j, 1)
+	}
 
-  if s != "0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n" {
-    t.Errorf("invalid base state")
+  if !b.rowFull(2) {
+    t.Errorf("row was full")
+  }
+
+  if b.rowFull(3) {
+    t.Errorf("row wasn't full")
   }
 }
 
