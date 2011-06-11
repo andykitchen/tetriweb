@@ -42,7 +42,25 @@ func TestShapeSameAs(t *testing.T) {
 
 func TestNewShape(t *testing.T) {
 	s := NewShape(T_SHAPE)
-	if len(s.CurrentState) != len(T_SHAPE) {
+	if len(s.CurrentState()) != len(T_SHAPE) {
 		t.Errorf("Invalid current state")
 	}
+}
+
+func TestRotateClockwise(t *testing.T) {
+  expected := NewShape([]int{
+    0, 0, 0, 0, 0,
+	  0, 0, 1, 0, 0,
+	  0, 0, 1, 1, 0,
+	  0, 0, 1, 0, 0,
+	  0, 0, 0, 0, 0})
+
+  s := NewShape(T_SHAPE)
+
+  s.RotateClockwise()
+
+  result := s.SameAs(expected)
+  if result != true {
+    t.Errorf("Invalid rotate clockwise")
+  }
 }

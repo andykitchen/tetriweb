@@ -1,5 +1,9 @@
 package main
 
+import (
+  "fmt"
+  "strconv"
+)
 var T_SHAPE []int = []int{
 	0, 0, 0, 0, 0,
 	0, 0, 1, 0, 0,
@@ -55,6 +59,8 @@ var SHAPES [][]int = [][]int{
 
 const SHAPE_WIDTH = 5
 const SHAPE_HEIGHT = 5
+const SHAPE_X_OFFSET = -2
+const SHAPE_Y_OFFSET = -2
 
 const (
   UP = iota
@@ -64,8 +70,23 @@ const (
 )
 
 type Shape struct {
-	CurrentState []int
+	baseState []int
   orientation int
+}
+
+func (s *Shape) CurrentState() (result []int) {
+  result = make([]int, 25)
+  
+  for i := 0; i < len(result); i++ {
+    x := i % SHAPE_WIDTH
+    y := (i / SHAPE_WIDTH)
+
+    fmt.Printf(strconv.Itoa(x) + ", " + strconv.Itoa(y) + "\n")
+    result[i] = s.GetCell( SHAPE_X_OFFSET + x,
+      SHAPE_Y_OFFSET + y)
+  }
+
+  return
 }
 
 func (s *Shape) GetCell(x int, y int) (k int) {
@@ -85,7 +106,11 @@ func (s *Shape) GetCell(x int, y int) (k int) {
 
 func (s *Shape) getShapeCell(x, y int) (int) {
   //TODO: add bounds checking
-  return s.CurrentState[(x+2)*WIDTH + (y+2)]
+  if x < -2 || x > 2 { return 0 }
+  if y < -2 || y > 2 { return 0 }
+  index := (x+2) + (y+2)*SHAPE_WIDTH
+  fmt.Printf(strconv.Itoa(index) + "\n")
+  return s.baseState[index]
 }
 
 func (s *Shape) RotateClockwise() {
@@ -105,13 +130,17 @@ func (s *Shape) RotateCounterClockwise() {
 }
 
 func (s1 *Shape) SameAs(s2 *Shape) (result bool) {
-	if len(s1.CurrentState) != len(s2.CurrentState) {
+	if len(s1.baseState) != len(s2.baseState) {
+    return false
+  }
+  
+	if len(s1.CurrentState()) != len(s2.CurrentState()) {
 		return false
 	}
 
 	result = true
-	for i := 0; i < len(s1.CurrentState); i++ {
-		if s1.CurrentState[i] != s2.CurrentState[i] {
+	for i := 0; i < len(s1.CurrentState()); i++ {
+		if s1.CurrentState()[i] != s2.CurrentState()[i] {
 			result = false
 		}
 	}
@@ -120,7 +149,7 @@ func (s1 *Shape) SameAs(s2 *Shape) (result bool) {
 
 func NewShape(shape []int) (s *Shape) {
 	s = new(Shape)
-	s.CurrentState = shape
+	s.baseState = shape
 	return
 }
 
