@@ -4,3 +4,4 @@ tetriweb
 *.6
 *.out
 _test*.go
+_test
