@@ -22,11 +22,11 @@ func TestRowFull(t *testing.T) {
 		b.setCell(2, j, 1)
 	}
 
-  if !b.rowFull(2) {
+  if !b.checkRowFull(2) {
     t.Errorf("row was full")
   }
 
-  if b.rowFull(3) {
+  if b.checkRowFull(3) {
     t.Errorf("row wasn't full")
   }
 }
