@@ -112,7 +112,7 @@ func (b *Board) String() (s string) {
 }
 
 func (b *Board) Tick() {
-	b.MoveDown()
+	b.MoveLeft()
 }
 
 func (b *Board) MoveLeft() {
