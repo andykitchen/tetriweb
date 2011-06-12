@@ -4,7 +4,7 @@ import (
   "flag"
 	"os"
 	"fmt"
-	"rand"
+	//"rand"
 	"exec"
 	// "syscall"
 )
@@ -27,7 +27,7 @@ func abs(i int) (j int) {
 }
 
 func PlayTerminal() {
-  rand.Seed(1)
+  //rand.Seed(1)
   g := new(Game)
   p := new(Player)
   p.id = 1
@@ -37,7 +37,7 @@ func PlayTerminal() {
   session := g.sessions[0]
   session.Start()
 	ticks := 0
-	rand.Seed(1)
+	//rand.Seed(1)
 	exec.Run("/bin/stty", []string{"stty", "-icanon", "min", "1", "-echo"},
 		nil, "", exec.PassThrough, exec.PassThrough, exec.PassThrough)
 	for {

@@ -8,21 +8,24 @@ import (
 	"syscall"
 )
 var counter int
+var game *Game
 
 func GameServer(ws *websocket.Conn) {
+  if counter >= 10 {
+    fmt.Println("Max number of players reached")
+    return
+  }
+
   counter += 1
-  g := new(Game)
   p := new(Player)
   p.id = counter
   p.name = "Test"
   
-  g.AddPlayer(p)
-  session := g.sessions[0]
+  game.AddPlayer(p)
+  session := game.sessions[0]
   session.Start()
   b := session.board
 
-	// rand.Seed(1)
-	
 	buf := make([]uint8, 512)
 
 	fmt.Println("New player: ", p.id)
@@ -75,6 +78,9 @@ func (b *Board) ToJson() (result []byte) {
 
 
 func main() {
+  game = new(Game)
+  fmt.Println("starting game...")
+
   if terminalFlag {
     PlayTerminal()
   } else {

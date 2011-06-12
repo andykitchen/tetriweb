@@ -2,6 +2,8 @@ package main
 
 import (
   "fmt"
+  "rand"
+  "time"
 )
 
 type Player struct {
@@ -51,5 +53,6 @@ func (s *GameSession) HandleKey(key string) {
 }
 
 func (s *GameSession) Start() {
+  rand.Seed(time.Seconds())
   s.board.AddShape()
 }
