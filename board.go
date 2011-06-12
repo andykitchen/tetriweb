@@ -170,7 +170,7 @@ func (b *Board) Tick() {
     if n > 0 {b.state = FINISHED}
 	}
 	
-	for row := 0; row < HEIGHT; row++ {
+	for row := HEIGHT-1; row >= 0; row-- {
 		if b.checkRowFull(row) {
 			b.removeRow(row)
 		}
