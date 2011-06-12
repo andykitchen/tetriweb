@@ -20,6 +20,10 @@ type Board struct {
 	next_shape *Shape
 }
 
+func NewBoard() (b Board) {
+	return
+}
+
 func (b *Board) getCell(i, j int) (k int) {
 	if b.play_shape != nil {
 		ox, oy := b.sx-i, b.sy-j

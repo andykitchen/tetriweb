@@ -8,11 +8,6 @@ import (
 	// "syscall"
 )
 
-
-func NewBoard() (b Board) {
-	return
-}
-
 func abs(i int) (j int) {
 	if i < 0 {
 		j = -i
@@ -23,7 +18,7 @@ func abs(i int) (j int) {
 	return
 }
 
-func main() {
+func PlayTerminal() {
 	b := NewBoard()
 
 	// for j := 3; j < 8; j++ {
