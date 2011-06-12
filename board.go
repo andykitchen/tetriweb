@@ -137,7 +137,7 @@ func (b *Board) String() (s string) {
 func (b *Board) Encode(player_id int) (data []uint8) {
 	data = make([]uint8, WIDTH*HEIGHT+1)
 	var n int
-  data[0] = uint8(player_id)
+  data[0] = strconv.Itoa(player_id)[0]
 	n = 1
 	for i := 0; i < HEIGHT; i++ {
 		for j := 0; j < WIDTH; j++ {

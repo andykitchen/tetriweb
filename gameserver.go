@@ -11,7 +11,7 @@ var counter int
 var game *Game
 
 func GameServer(ws *websocket.Conn) {
-  if counter >= 10 {
+  if counter > 10 {
     fmt.Println("Max number of players reached")
     return
   }
