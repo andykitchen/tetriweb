@@ -7,13 +7,19 @@ import (
 	"http"
 	"syscall"
 )
+var counter int
 
 func GameServer(ws *websocket.Conn) {
-	b := NewBoard()
-	b.play_shape = NewShape(T_SHAPE)
-	b.play_shape.RotateClockwise()
-	b.sx = 15
-	b.sy = 6
+  counter += 1
+  g := new(Game)
+  p := new(Player)
+  p.id = counter
+  p.name = "Test"
+  
+  g.AddPlayer(p)
+  session := g.sessions[0]
+  session.Start()
+  b := session.board
 
 	// rand.Seed(1)
 	
@@ -30,15 +36,17 @@ func GameServer(ws *websocket.Conn) {
 			}
 
 			if(n > 0) {
-				fmt.Println("Read: ", string(buf))
+        key := string(buf[:n])
+				fmt.Println("Read key: ", key)
+        session.HandleKey(key)
 			}
 		}
 	}()
 	
 	for {
 		fmt.Println("Start write")
-
-		_, err := ws.Write([]uint8(b.String()))
+    //session.HandleKey("l")
+		_, err := ws.Write([]uint8(session.board.String()))
 		if err != nil {
 			fmt.Println("Websocket write error: ", err.String())
 			break
