@@ -169,6 +169,12 @@ func (b *Board) Tick() {
     n := b.AddShape()
     if n > 0 {b.state = FINISHED}
 	}
+	
+	for row := 0; row < HEIGHT; row++ {
+		if b.checkRowFull(row) {
+			b.removeRow(row)
+		}
+	}
 }
 
 func (b *Board) MoveLeft() {
