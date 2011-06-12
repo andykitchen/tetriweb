@@ -39,8 +39,8 @@ func main() {
 
 	ticks := 0
 	rand.Seed(1)
-	exec.Run("/bin/stty", []string{"stty","-icanon","min","1","-echo"},
-					nil, "", exec.PassThrough, exec.PassThrough, exec.PassThrough)
+	exec.Run("/bin/stty", []string{"stty", "-icanon", "min", "1", "-echo"},
+		nil, "", exec.PassThrough, exec.PassThrough, exec.PassThrough)
 	for {
 
 		fmt.Print(b.String())
@@ -76,5 +76,5 @@ func main() {
 		b.Tick()
 		ticks++
 	}
-	
+
 }

@@ -91,18 +91,19 @@ func CheckShapeOverlap(b *Board, newX int, newY int) bool {
 
 			if abs(ox) <= 2 && abs(oy) <= 2 {
 				outside_board := i < 0 || i >= HEIGHT || j < 0 || j >= WIDTH
-				shape_filled  := b.play_shape.GetCell(ox, oy) > 0
-				
+				shape_filled := b.play_shape.GetCell(ox, oy) > 0
+
 				if outside_board && shape_filled {
 					return true
-				} else {
-					cell_filled  := b.getCellRaw(i, j) > 0
+				}
+
+				if !outside_board {
+					cell_filled := b.getCellRaw(i, j) > 0
 					if cell_filled && shape_filled {
 						return true
 					}
 				}
 			}
-
 		}
 	}
 
@@ -137,8 +138,17 @@ func (b *Board) Tick() {
 		b.updateShapeToBoard()
 
 		b.play_shape = getRandomShape()
-		b.sx = HEIGHT
+		startX := HEIGHT - 2
 		b.sy = WIDTH / 2
+
+		for {
+			if !CheckShapeOverlap(b, startX, b.sy) {
+				break
+			}
+			startX--
+		}
+		b.sx = startX
+
 	}
 }
 
@@ -207,14 +217,12 @@ func getRandomShape() (shape *Shape) {
 	return
 }
 
-func (b *Board) GetBoardState() ([]int) {
+func (b *Board) GetBoardState() []int {
 	result := make([]int, WIDTH*HEIGHT)
-  for i := HEIGHT - 1; i >= 0; i-- {
+	for i := HEIGHT - 1; i >= 0; i-- {
 		for j := 0; j < WIDTH; j++ {
 			result[i*WIDTH+j] = b.getCell(i, j)
 		}
-  }
+	}
 	return result
 }
-
-

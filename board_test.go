@@ -242,7 +242,7 @@ func TestGetNextRandomShape(t *testing.T) {
 		t.Errorf("Unexpected initial state")
 	}
 
-	for i := 0; i < (TICKS_TO_GRAV * 4); i++ {
+	for i := 0; i < (TICKS_TO_GRAV * 2); i++ {
 		b.Tick()
 	}
 
