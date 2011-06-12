@@ -134,10 +134,11 @@ func (b *Board) String() (s string) {
 	return
 }
 
-func (b *Board) Encode() (data []uint8) {
-	data = make([]uint8, WIDTH*HEIGHT)
+func (b *Board) Encode(player_id int) (data []uint8) {
+	data = make([]uint8, WIDTH*HEIGHT+1)
 	var n int
-	
+  data[0] = uint8(player_id)
+	n = 1
 	for i := 0; i < HEIGHT; i++ {
 		for j := 0; j < WIDTH; j++ {
 			k := b.getCell(i, j)

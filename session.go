@@ -56,3 +56,8 @@ func (s *GameSession) Start() {
   rand.Seed(time.Seconds())
   s.board.AddShape()
 }
+
+func (s *GameSession) Encode() ([]uint8) {
+  encodedBoard := s.board.Encode(s.player.id)
+  return encodedBoard
+}
