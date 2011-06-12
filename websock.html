@@ -22,9 +22,9 @@
       document.getElementById("text-canvas").innerHTML = "Connection closed."
     }
 
-    
     socket.onmessage = function (msg) {
       document.getElementById("text-canvas").innerHTML = msg.data
+      redraw(msg.data)
     }
     
     socket.onerror = function (err) {
@@ -41,15 +41,17 @@
     var canvas
     function loadDOM() {
       canvas = document.getElementById("board").getContext("2d")
-      canvas.fillStyle = "white"
-      canvas.fillRect(0, 0, WIDTH, HEIGHT)
-      drawBoard()
-      drawGrid()
+      redraw([])
     }
     
-    var board = [0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1]
+    function redraw(board) {
+      canvas.fillStyle = "white"
+      canvas.fillRect(0, 0, WIDTH, HEIGHT)
+      drawGrid()
+      drawBoard(board)
+    }
     
-    function drawBoard() {
+    function drawBoard(board) {
       var row = 0
       var col = 0
       
@@ -59,7 +61,7 @@
         }
         
         col++
-        if(col > BOARD_WIDTH) {
+        if(col >= BOARD_WIDTH) {
           col = 0
           row++
         }

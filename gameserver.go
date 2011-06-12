@@ -46,7 +46,7 @@ func GameServer(ws *websocket.Conn) {
 	for {
 		fmt.Println("Start write")
     //session.HandleKey("l")
-		_, err := ws.Write([]uint8(session.board.String()))
+		_, err := ws.Write(session.board.Encode())
 		if err != nil {
 			fmt.Println("Websocket write error: ", err.String())
 			break

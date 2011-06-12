@@ -133,6 +133,22 @@ func (b *Board) String() (s string) {
 	return
 }
 
+func (b *Board) Encode() (data []uint8) {
+	data = make([]uint8, WIDTH*HEIGHT)
+	var n int
+	
+	for i := 0; i < HEIGHT; i++ {
+		for j := 0; j < WIDTH; j++ {
+			k := b.getCell(i, j)
+			data[n] = strconv.Itoa(k)[0]
+			n++
+		}
+	}
+
+	return
+}
+
+
 var _ticks_betweent_grav int = 0
 
 func (b *Board) Tick() {
