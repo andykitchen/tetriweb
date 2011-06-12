@@ -7,14 +7,23 @@
 	<title>untitled</title>
 	<meta name="author" content="Andy Kitchen">
 	<!-- Date: 2011-06-12 -->
-  <script>
+  <script type="text/javascript">
+    function keypress_handler(evt) {
+      if (socket) {
+        var keyCode = evt.charCode || evt.keyCode;
+        var key = String.fromCharCode(keyCode);
+        socket.send(key);
+      }
+    }
+
+    document.onkeypress = keypress_handler
     var socket = new WebSocket('ws://localhost:4000/tetris')
 
     socket.onopen = function () {
-      setInterval(function() {
-          if (socket.bufferedAmount == 0)
-            socket.send("h");
-      }, 1000);
+//      setInterval(function() {
+//          if (socket.bufferedAmount == 0)
+//            socket.send("h");
+//      }, 1000);
     };
 
     socket.onclose = function () {
