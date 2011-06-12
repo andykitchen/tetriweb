@@ -23,10 +23,10 @@ func abs(i int) (j int) {
 func main() {
 	b := NewBoard()
 
-	for j := 0; j < WIDTH; j++ {
-		b.setCell(2, j, 1)
-	}
-
+	//	for j := 0; j < WIDTH; j++ {
+	//		b.setCell(2, j, 1)
+	//	}
+	//
 	b.play_shape = NewShape(T_SHAPE)
 
 	b.sx = 10
@@ -44,7 +44,7 @@ func main() {
 		}
 		if s == "l" {
 			fmt.Println("ROTATE!")
-			b.play_shape.RotateClockwise()
+			//b.play_shape.RotateClockwise()
 		} else {
 			fmt.Println("NOROTATE")
 		}

@@ -102,7 +102,7 @@ func (b *Board) String() (s string) {
 }
 
 func (b *Board) Tick() {
-	b.sy -= 1
+	b.sx -= 1
 }
 
 func (b *Board) MoveLeft() {
