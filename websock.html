@@ -8,14 +8,13 @@
 	<meta name="author" content="Andy Kitchen">
 	<!-- Date: 2011-06-12 -->
   <script>
-    var socket = new WebSocket('ws://localhost:4000/echo');
+    var socket = new WebSocket('ws://localhost:4000/tetris');
 
     socket.onopen = function () {
-    // setInterval(function() {
-    //     if (socket.bufferedAmount == 0)
-    //       socket.send(getUpdateData());
-    //   }, 50);
-      socket.send("Hello World!")
+      setInterval(function() {
+          if (socket.bufferedAmount == 0)
+            socket.send("Hello World!");
+      }, 1000);
     };
 
     socket.onclose = function () {

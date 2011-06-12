@@ -9,38 +9,45 @@ import (
 )
 
 func GameServer(ws *websocket.Conn) {
-	var i int
 	b := NewBoard()
 	b.play_shape = NewShape(T_SHAPE)
 	b.play_shape.RotateClockwise()
 	b.sx = 15
 	b.sy = 6
 
-	if err != nil {
-		fmt.Println("Couldn't set timeout: ", err.String())
-		return
-	}
-
 	// rand.Seed(1)
 	
 	buf := make([]uint8, 512)
+	
+	go func() {
+		for {
+			fmt.Println("Start read")
+
+			n, err := ws.Read(buf)
+			if err != nil {
+				fmt.Println("Websocket read error: ", err.String())
+				break
+			}
+
+			if(n > 0) {
+				fmt.Println("Read: ", string(buf))
+			}
+		}
+	}()
+	
 	for {
-		fmt.Println("loop")
-		// s := fmt.Sprintf("Hello from server: %d!!!", i)
-		n, err := ws.Read(buf)
+		fmt.Println("Start write")
+
+		_, err := ws.Write([]uint8(b.String()))
 		if err != nil {
-			fmt.Println("Websocket read error: ", err.String())
+			fmt.Println("Websocket write error: ", err.String())
+			break
 		}
-		
-		if(n > 0) {
-			fmt.Println("Read: ", string(buf))
-		}
-		
-		ws.Write([]uint8(b.String()))
+
 		syscall.Sleep(500000000)
-		i++
 		b.Tick()
 	}
+
 }
 
 type PlayerBoard struct {
@@ -62,7 +69,7 @@ func (b *Board) ToJson() (result []byte) {
 
 
 func main() {
-	http.Handle("/echo", websocket.Handler(GameServer));
+	http.Handle("/tetris", websocket.Handler(GameServer));
 	err := http.ListenAndServe(":4000", nil);
 	if err != nil {
 		panic("ListenAndServe: " + err.String())
