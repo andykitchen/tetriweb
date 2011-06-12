@@ -8,32 +8,106 @@
 	<meta name="author" content="Andy Kitchen">
 	<!-- Date: 2011-06-12 -->
   <script>
-    var socket = new WebSocket('ws://localhost:4000/tetris');
+    var socket = new WebSocket('ws://localhost:4000/tetris')
 
     socket.onopen = function () {
       setInterval(function() {
           if (socket.bufferedAmount == 0)
             socket.send("Hello World!");
-      }, 1000);
-    };
+      }, 1000)
+    }
 
     socket.onclose = function () {
       // alert("Connection closed")
-      document.getElementById("board").innerHTML = "Connection closed."
+      document.getElementById("text-canvas").innerHTML = "Connection closed."
     }
 
     
     socket.onmessage = function (msg) {
-      document.getElementById("board").innerHTML = msg.data
-    };
+      document.getElementById("text-canvas").innerHTML = msg.data
+    }
     
     socket.onerror = function (err) {
       alert(err)
     }
 
+    var WIDTH  = 200
+    var HEIGHT = 400
+    var CELL_WIDTH  = 20
+    var CELL_HEIGHT = 20
+    var BOARD_HEIGHT = 20
+    var BOARD_WIDTH  = 10
+
+    var canvas
+    function loadDOM() {
+      canvas = document.getElementById("board").getContext("2d")
+      canvas.fillStyle = "white"
+      canvas.fillRect(0, 0, WIDTH, HEIGHT)
+      drawBoard()
+      drawGrid()
+    }
+    
+    var board = [0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1]
+    
+    function drawBoard() {
+      var row = 0
+      var col = 0
+      
+      for(var i = 0; i < board.length; i++) {
+        if (board[i] > 0) {
+          drawCell(row, col)
+        }
+        
+        col++
+        if(col > BOARD_WIDTH) {
+          col = 0
+          row++
+        }
+      }
+    }
+    
+    function drawCell(row, column) {
+      screen_i = column
+      screen_j = BOARD_HEIGHT - row - 1
+
+      x = screen_i*CELL_HEIGHT
+      y = screen_j*CELL_WIDTH
+
+      canvas.fillStyle = "red"
+      canvas.fillRect(x, y, CELL_HEIGHT, CELL_WIDTH) 
+    }
+    
+    function drawGrid() {
+      canvas.lineStyle = "black"
+      canvas.beginPath()
+      canvas.moveTo(0, 0)
+      canvas.lineTo(0, HEIGHT)
+      canvas.lineTo(WIDTH, HEIGHT)
+      canvas.lineTo(WIDTH, 0)
+      canvas.lineTo(0, 0)
+      
+      vert_lines = WIDTH/CELL_WIDTH
+      for (var n = 1; n < vert_lines; n++) {
+        x = n*CELL_WIDTH
+        canvas.moveTo(x, 0)
+        canvas.lineTo(x, HEIGHT)
+      }
+
+      horiz_lines = HEIGHT/CELL_HEIGHT
+      for (var n = 1; n < horiz_lines; n++) {
+        y = n*CELL_HEIGHT
+        canvas.moveTo(0, y)
+        canvas.lineTo(WIDTH, y)
+      }
+
+      canvas.stroke()
+      canvas.closePath()
+    }
+    
   </script>
 </head>
-<body>
-  <div id="board"></div>
+<body onload="loadDOM()">
+  <div id="text-canvas"></div>
+  <canvas id="board" height="400" width="200"></canvas>
 </body>
 </html>
