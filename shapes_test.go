@@ -15,24 +15,24 @@ func TestShapeSameAs(t *testing.T) {
 		t.Errorf("Invalid Same As length")
 	}
 
-  s3 := NewShape([]int{
-    0, 0, 0, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 0, 1, 1, 0,
-	  0, 0, 1, 0, 0,
-	  0, 0, 0, 0, 0})
+	s3 := NewShape([]int{
+		0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 0, 1, 1, 0,
+		0, 0, 1, 0, 0,
+		0, 0, 0, 0, 0})
 
 	result = s1.SameAs(s3)
 	if result == true {
 		t.Errorf("Invalid Same As current state")
 	}
 
-  s4 := NewShape([]int{
-    0, 0, 0, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 1, 1, 1, 0,
-	  0, 0, 0, 0, 0,
-	  0, 0, 0, 0, 0})
+	s4 := NewShape([]int{
+		0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 1, 1, 1, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0})
 
 	result = s1.SameAs(s4)
 	if result != true {
@@ -48,161 +48,160 @@ func TestNewShape(t *testing.T) {
 }
 
 func TestRotateClockwiseRIGHT(t *testing.T) {
-  expected := NewShape([]int{
-    0, 0, 0, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 0, 1, 1, 0,
-	  0, 0, 1, 0, 0,
-	  0, 0, 0, 0, 0})
+	expected := NewShape([]int{
+		0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 0, 1, 1, 0,
+		0, 0, 1, 0, 0,
+		0, 0, 0, 0, 0})
 
-  s := NewShape(T_SHAPE)
+	s := NewShape(T_SHAPE)
 
-  s.RotateClockwise()
-  
-  if s.Orientation != RIGHT {
-    t.Errorf("Invalid orientation")
-  }
-  
-  fmt.Printf(s.String() + "\n")
+	s.RotateClockwise()
 
-  result := s.SameAs(expected)
-  if result != true {
-    fmt.Printf(s.String())
-    t.Errorf("Invalid rotate clockwise")
-  }
+	if s.Orientation != RIGHT {
+		t.Errorf("Invalid orientation")
+	}
+
+	fmt.Printf(s.String() + "\n")
+
+	result := s.SameAs(expected)
+	if result != true {
+		fmt.Printf(s.String())
+		t.Errorf("Invalid rotate clockwise")
+	}
 }
 
 func TestRotateClockwiseDOWN(t *testing.T) {
-  expected := NewShape([]int{
-    0, 0, 0, 0, 0,
-	  0, 0, 0, 0, 0,
-	  0, 1, 1, 1, 0,
-	  0, 0, 1, 0, 0,
-	  0, 0, 0, 0, 0})
+	expected := NewShape([]int{
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0,
+		0, 1, 1, 1, 0,
+		0, 0, 1, 0, 0,
+		0, 0, 0, 0, 0})
 
-  s := NewShape(T_SHAPE)
+	s := NewShape(T_SHAPE)
 
-  s.RotateClockwise()
-  s.RotateClockwise()
-  
-  if s.Orientation != DOWN {
-    t.Errorf("Invalid orientation")
-  }
-  
-  fmt.Printf(s.String() + "\n")
+	s.RotateClockwise()
+	s.RotateClockwise()
 
-  result := s.SameAs(expected)
-  if result != true {
-    fmt.Printf(s.String())
-    t.Errorf("Invalid rotate clockwise")
-  }
+	if s.Orientation != DOWN {
+		t.Errorf("Invalid orientation")
+	}
+
+	fmt.Printf(s.String() + "\n")
+
+	result := s.SameAs(expected)
+	if result != true {
+		fmt.Printf(s.String())
+		t.Errorf("Invalid rotate clockwise")
+	}
 }
 
 func TestRotateClockwiseLEFT(t *testing.T) {
-  expected := NewShape([]int{
-    0, 0, 0, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 1, 1, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 0, 0, 0, 0})
+	expected := NewShape([]int{
+		0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 1, 1, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 0, 0, 0, 0})
 
-  s := NewShape(T_SHAPE)
+	s := NewShape(T_SHAPE)
 
-  s.RotateClockwise()
-  s.RotateClockwise()
-  s.RotateClockwise()
-  
-  if s.Orientation != LEFT {
-    t.Errorf("Invalid orientation")
-  }
-  
-  fmt.Printf(s.String() + "\n")
+	s.RotateClockwise()
+	s.RotateClockwise()
+	s.RotateClockwise()
 
-  result := s.SameAs(expected)
-  if result != true {
-    fmt.Printf(s.String())
-    t.Errorf("Invalid rotate clockwise")
-  }
+	if s.Orientation != LEFT {
+		t.Errorf("Invalid orientation")
+	}
+
+	fmt.Printf(s.String() + "\n")
+
+	result := s.SameAs(expected)
+	if result != true {
+		fmt.Printf(s.String())
+		t.Errorf("Invalid rotate clockwise")
+	}
 }
 
 func TestRotateClockwiseFULLCIRCLE(t *testing.T) {
-  expected := NewShape([]int{
-    0, 0, 0, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 1, 1, 1, 0,
-	  0, 0, 0, 0, 0,
-	  0, 0, 0, 0, 0})
+	expected := NewShape([]int{
+		0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 1, 1, 1, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0})
 
-  s := NewShape(T_SHAPE)
+	s := NewShape(T_SHAPE)
 
-  s.RotateClockwise()
-  s.RotateClockwise()
-  s.RotateClockwise()
-  s.RotateClockwise()
-  
-  if s.Orientation != UP {
-    t.Errorf("Invalid orientation")
-  }
-  
-  fmt.Printf(s.String() + "\n")
+	s.RotateClockwise()
+	s.RotateClockwise()
+	s.RotateClockwise()
+	s.RotateClockwise()
 
-  result := s.SameAs(expected)
-  if result != true {
-    fmt.Printf(s.String())
-    t.Errorf("Invalid rotate clockwise")
-  }
+	if s.Orientation != UP {
+		t.Errorf("Invalid orientation")
+	}
+
+	fmt.Printf(s.String() + "\n")
+
+	result := s.SameAs(expected)
+	if result != true {
+		fmt.Printf(s.String())
+		t.Errorf("Invalid rotate clockwise")
+	}
 }
 
 func TestRotateCounterClockwiseLEFT(t *testing.T) {
-  expected := NewShape([]int{
-    0, 0, 0, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 1, 1, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 0, 0, 0, 0})
+	expected := NewShape([]int{
+		0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 1, 1, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 0, 0, 0, 0})
 
-  s := NewShape(T_SHAPE)
+	s := NewShape(T_SHAPE)
 
-  s.RotateCounterClockwise()
-  
-  if s.Orientation != LEFT {
-    t.Errorf("Invalid orientation")
-  }
-  
-  fmt.Printf(s.String() + "\n")
+	s.RotateCounterClockwise()
 
-  result := s.SameAs(expected)
-  if result != true {
-    fmt.Printf(s.String())
-    t.Errorf("Invalid rotate clockwise")
-  }
+	if s.Orientation != LEFT {
+		t.Errorf("Invalid orientation")
+	}
+
+	fmt.Printf(s.String() + "\n")
+
+	result := s.SameAs(expected)
+	if result != true {
+		fmt.Printf(s.String())
+		t.Errorf("Invalid rotate clockwise")
+	}
 }
 
 func TestRotateCounterClockwiseFULLCIRCLE(t *testing.T) {
-  expected := NewShape([]int{
-    0, 0, 0, 0, 0,
-	  0, 0, 1, 0, 0,
-	  0, 1, 1, 1, 0,
-	  0, 0, 0, 0, 0,
-	  0, 0, 0, 0, 0})
+	expected := NewShape([]int{
+		0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0,
+		0, 1, 1, 1, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0})
 
-  s := NewShape(T_SHAPE)
+	s := NewShape(T_SHAPE)
 
-  s.RotateCounterClockwise()
-  s.RotateCounterClockwise()
-  s.RotateCounterClockwise()
-  s.RotateCounterClockwise()
-  
-  if s.Orientation != UP {
-    t.Errorf("Invalid orientation")
-  }
-  
-  fmt.Printf(s.String() + "\n")
+	s.RotateCounterClockwise()
+	s.RotateCounterClockwise()
+	s.RotateCounterClockwise()
+	s.RotateCounterClockwise()
 
-  result := s.SameAs(expected)
-  if result != true {
-    fmt.Printf(s.String())
-    t.Errorf("Invalid rotate clockwise")
-  }
+	if s.Orientation != UP {
+		t.Errorf("Invalid orientation")
+	}
+
+	fmt.Printf(s.String() + "\n")
+
+	result := s.SameAs(expected)
+	if result != true {
+		fmt.Printf(s.String())
+		t.Errorf("Invalid rotate clockwise")
+	}
 }
-
