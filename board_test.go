@@ -259,3 +259,7 @@ func TestCheckShapeMoveOverEdgeOfBoard(t *testing.T) {
 
 
 }
+
+func TestGetBoardState(t *testing.T) {
+
+}

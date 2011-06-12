@@ -199,3 +199,15 @@ func getRandomShape() (shape *Shape) {
 	shape.Orientation = new_orient
 	return
 }
+
+func (b *Board) GetBoardState() ([]int) {
+	result := make([]int, WIDTH*HEIGHT)
+  for i := HEIGHT - 1; i >= 0; i-- {
+		for j := 0; j < WIDTH; j++ {
+			result[i*WIDTH+j] = b.getCell(i, j)
+		}
+  }
+	return result
+}
+
+

@@ -73,6 +73,7 @@ const (
 type Shape struct {
 	baseState   []int
 	Orientation int
+  Colour      int
 }
 
 func (s *Shape) CurrentState() (result []int) {
