@@ -233,3 +233,17 @@ func (b *Board) AddShape() {
   }
   b.sx = startX
 }
+
+func (b *Board) DropShape() {
+  i := 0
+  nextX := 0
+  for {
+    nextX = b.sx - i
+	  if CheckShapeOverlap(b, nextX, b.sy) {
+		  i -= 1
+      break;
+	  }
+    i++
+  }
+  b.sx -= i
+}

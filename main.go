@@ -27,6 +27,7 @@ func abs(i int) (j int) {
 }
 
 func PlayTerminal() {
+  rand.Seed(1)
   g := new(Game)
   p := new(Player)
   p.id = 1

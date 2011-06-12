@@ -44,6 +44,9 @@ func (s *Session) HandleKey(key string) {
   case "o":
     fmt.Println(s.player.id, " C ROTATE!")
     s.board.RotateClockwise()
+  case " ":
+    fmt.Println(s.player.id, " DROP!")
+    s.board.DropShape()
   }
 }
 
