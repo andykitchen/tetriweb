@@ -47,24 +47,43 @@
     var BOARD_HEIGHT = 20
     var BOARD_WIDTH  = 10
 
-    var canvas
+    var canvases = []
     function loadDOM() {
-      canvas = document.getElementById("board").getContext("2d")
-      redraw(canvas, [])
+      canvases.push(document.getElementById("board-0").getContext("2d"))
+      canvases.push(document.getElementById("board-1").getContext("2d"))
+      canvases.push(document.getElementById("board-2").getContext("2d"))
+      canvases.push(document.getElementById("board-3").getContext("2d"))
+
+      for(var i = 0; i < canvases.length; i++) {
+        drawNotPlaying(canvases[i])
+      }
     }
     
     function redraw(board) {
+      player = board[0]
+      
+      if(canvases[player]) {
+        clearCanvas(canvases[player])
+        drawBoard(canvases[player], board)
+        drawGrid(canvases[player])
+      }
+    }
+    
+    function clearCanvas(canvas) {
       canvas.fillStyle = "white"
       canvas.fillRect(0, 0, WIDTH, HEIGHT)
-      drawBoard(canvas, board)
-      drawGrid(canvas)
+    }
+    
+    function drawNotPlaying(canvas) {
+      canvas.fillStyle = "black"
+      canvas.fillRect(0, 0, WIDTH, HEIGHT)
     }
     
     function drawBoard(canvas, board) {
       var row = 0
       var col = 0
       
-      for(var i = 0; i < board.length; i++) {
+      for(var i = 1; i < board.length; i++) {
         if (board[i] > 0) {
           drawCell(canvas, row, col)
         }
@@ -119,6 +138,9 @@
 </head>
 <body onload="loadDOM()">
   <div id="text-canvas"></div>
-  <canvas id="board" height="400" width="200"></canvas>
+  <canvas id="board-0" height="400" width="200"></canvas>
+  <canvas id="board-1" height="400" width="200"></canvas>
+  <canvas id="board-2" height="400" width="200"></canvas>
+  <canvas id="board-3" height="400" width="200"></canvas>
 </body>
 </html>
