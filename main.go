@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"rand"
 	// "syscall"
 )
 
@@ -34,23 +35,39 @@ func main() {
 	b.sx = 5
 	b.sy = 6
 
+	ticks := 0
+	rand.Seed(1)
 	var s string
 	for {
+
 		fmt.Print(b.String())
-		fmt.Print(b.sx, "------------------\n")
+		fmt.Print(ticks, "------------------\n")
 		// syscall.Sleep(1000000000)
 		_, err := fmt.Scanf("%s", &s)
 		if err != nil {
 			fmt.Println(err.String())
 			return
 		}
-		if s == "l" {
+
+		switch s {
+		case "h":
+			fmt.Println("LEFT!")
+			b.MoveLeft()
+		case "l":
+			fmt.Println("RIGHT!")
+			b.MoveRight()
+		case "j":
+			fmt.Println("DOWN!")
+			b.MoveDown()
+		case "u":
 			fmt.Println("ROTATE!")
-			//b.play_shape.RotateClockwise()
-		} else {
-			fmt.Println("NOROTATE")
+			b.RotateCounterClockwise()
+		case "o":
+			fmt.Println("ROTATE!")
+			b.RotateClockwise()
 		}
 
 		b.Tick()
+		ticks++
 	}
 }

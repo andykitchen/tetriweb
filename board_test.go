@@ -2,7 +2,8 @@ package main
 
 import (
 	"testing"
-	//"fmt"
+	"rand"
+	"fmt"
 	//"strconv"
 )
 
@@ -212,5 +213,49 @@ func TestCheckShapeMoveOverlapLeft(t *testing.T) {
 	if state != expected {
 		t.Errorf("Unexpected move down state")
 	}
+
+}
+
+func TestGetNextRandomShape(t *testing.T) {
+	rand.Seed(1)
+
+	initial_state := "0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0110000000\n0110000000\n0110011100\n0110001000\n0110000000\n1111111111\n0000000000\n0000000000\n"
+
+	expected := "0000001000\n0000011000\n0000010000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0110000000\n0110000000\n0110000000\n0110011100\n0110001000\n1111111111\n0000000000\n0000000000\n"
+
+	b := new(Board)
+
+	b.FillLine(2)
+
+	for j := 3; j < 8; j++ {
+		b.setCell(j, 2, 1)
+		b.setCell(j, 1, 1)
+	}
+
+	b.play_shape = NewShape(T_SHAPE)
+	b.play_shape.RotateClockwise()
+	b.sx = 5
+	b.sy = 6
+
+	state := b.String()
+	if state != initial_state {
+		t.Errorf("Unexpected initial state")
+	}
+
+	for i := 0; i < (TICKS_TO_GRAV * 4); i++ {
+		b.Tick()
+	}
+
+	state = b.String()
+	if state != expected {
+		fmt.Printf(state)
+		t.Errorf("Unexpected next play state")
+	}
+
+}
+
+func TestCheckShapeMoveOverEdgeOfBoard(t *testing.T) {
+	//TODO
+
 
 }

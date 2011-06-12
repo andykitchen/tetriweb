@@ -2,19 +2,22 @@ package main
 
 import (
 	"strconv"
+	"rand"
 )
 
 const (
-	WIDTH   = 10
-	HEIGHT  = 20
-	SHAPE_W = 4
-	SHAPE_H = 4
+	WIDTH         = 10
+	HEIGHT        = 20
+	SHAPE_W       = 4
+	SHAPE_H       = 4
+	TICKS_TO_GRAV = 3
 )
 
 type Board struct {
 	cells      [WIDTH * HEIGHT]int
 	sx, sy     int
 	play_shape *Shape
+	next_shape *Shape
 }
 
 func (b *Board) getCell(i, j int) (k int) {
@@ -111,8 +114,25 @@ func (b *Board) String() (s string) {
 	return
 }
 
+var _ticks_betweent_grav int = 0
+
 func (b *Board) Tick() {
-	b.MoveLeft()
+
+	if _ticks_betweent_grav == 3 {
+		b.MoveDown()
+		_ticks_betweent_grav = 0
+	} else {
+		_ticks_betweent_grav++
+	}
+
+	nextX := b.sx - 1
+	if CheckShapeOverlap(b, nextX, b.sy) {
+		b.updateShapeToBoard()
+
+		b.play_shape = getRandomShape()
+		b.sx = HEIGHT
+		b.sy = WIDTH / 2
+	}
 }
 
 func (b *Board) MoveLeft() {
@@ -134,4 +154,48 @@ func (b *Board) MoveDown() {
 	if !CheckShapeOverlap(b, nextX, b.sy) {
 		b.sx = nextX
 	}
+}
+
+func (b *Board) updateShapeToBoard() {
+	for i := 0; i < HEIGHT; i++ {
+		for j := 0; j < WIDTH; j++ {
+			ox, oy := b.sx-i, b.sy-j
+
+			if abs(ox) <= 2 && abs(oy) <= 2 {
+				k := b.play_shape.GetCell(ox, oy)
+
+				if k > 0 {
+					b.setCell(i, j, 1)
+				}
+			}
+		}
+	}
+}
+
+func (b *Board) RotateClockwise() {
+	b.play_shape.RotateClockwise()
+
+	if CheckShapeOverlap(b, b.sx, b.sy) {
+		//undo
+		b.play_shape.RotateCounterClockwise()
+	}
+}
+
+func (b *Board) RotateCounterClockwise() {
+	b.play_shape.RotateCounterClockwise()
+
+	if CheckShapeOverlap(b, b.sx, b.sy) {
+		//Undo
+		b.play_shape.RotateClockwise()
+	}
+}
+
+func getRandomShape() (shape *Shape) {
+	num_shapes := len(SHAPES)
+	index := rand.Intn(num_shapes)
+	shape = NewShape(SHAPES[index])
+
+	new_orient := rand.Intn(LEFT)
+	shape.Orientation = new_orient
+	return
 }
