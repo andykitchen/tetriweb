@@ -113,7 +113,7 @@ func (s *Shape) GetCell(x int, y int) (k int) {
 	case RIGHT:
 		k = s.getShapeCell(y, -x)
 	case DOWN:
-		k = s.getShapeCell(x, -y)
+		k = s.getShapeCell(-x, -y)
 	case LEFT:
 		k = s.getShapeCell(-y, x)
 	}
