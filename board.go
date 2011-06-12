@@ -25,6 +25,7 @@ type Board struct {
 	play_shape *Shape
 	next_shape *Shape
   state      int
+  _ticks_betweent_grav int
 }
 
 func NewBoard() (b Board) {
@@ -149,17 +150,16 @@ func (b *Board) Encode() (data []uint8) {
 }
 
 
-var _ticks_betweent_grav int = 0
 
 func (b *Board) Tick() {
   if b.state == FINISHED {return}
   b.state = PLAYING
 
-	if _ticks_betweent_grav == 3 {
+	if b._ticks_betweent_grav == 5 {
 		b.MoveDown()
-		_ticks_betweent_grav = 0
+		b._ticks_betweent_grav = 0
 	} else {
-		_ticks_betweent_grav++
+		b._ticks_betweent_grav++
 	}
 
 	nextX := b.sx - 1
