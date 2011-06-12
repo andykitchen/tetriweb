@@ -53,6 +53,8 @@
       canvases.push(document.getElementById("board-1").getContext("2d"))
       canvases.push(document.getElementById("board-2").getContext("2d"))
       canvases.push(document.getElementById("board-3").getContext("2d"))
+      canvases.push(document.getElementById("board-4").getContext("2d"))
+      canvases.push(document.getElementById("board-5").getContext("2d"))
 
       for(var i = 0; i < canvases.length; i++) {
         drawNotPlaying(canvases[i])
@@ -142,5 +144,7 @@
   <canvas id="board-1" height="400" width="200"></canvas>
   <canvas id="board-2" height="400" width="200"></canvas>
   <canvas id="board-3" height="400" width="200"></canvas>
+  <canvas id="board-4" height="400" width="200"></canvas>
+  <canvas id="board-5" height="400" width="200"></canvas>
 </body>
 </html>
