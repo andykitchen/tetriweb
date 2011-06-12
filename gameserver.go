@@ -46,11 +46,13 @@ func GameServer(ws *websocket.Conn) {
 	}()
 	
 	for {
-		_, err := ws.Write(session.Encode())
-		if err != nil {
-			fmt.Println("Websocket write error: ", err.String())
-			break
-		}
+    for i := 0; i < len(game.sessions); i++ {
+      _, err := ws.Write(game.sessions[i].Encode())
+      if err != nil {
+        fmt.Println("Websocket write error: ", err.String())
+        break
+      }
+    }
 
 		syscall.Sleep(100000000)
 		b.Tick()
