@@ -21,12 +21,13 @@ type GameSession struct {
 }
 
 
-func (g *Game) AddPlayer(player *Player) {
-  s := new(GameSession)
+func (g *Game) AddPlayer(player *Player) (s *GameSession) {
+  s = new(GameSession)
   s.board = new(Board)
   s.player = player
   
   g.sessions = append(g.sessions, *s)
+  return s
 }
 
 func (s *GameSession) HandleKey(key string) {

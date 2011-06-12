@@ -21,8 +21,7 @@ func GameServer(ws *websocket.Conn) {
   p.id = counter
   p.name = "Test"
   
-  game.AddPlayer(p)
-  session := game.sessions[0]
+  session := game.AddPlayer(p)
   session.Start()
   b := session.board
 
