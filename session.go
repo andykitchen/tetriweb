@@ -10,24 +10,24 @@ type Player struct {
 }
 
 type Game struct {
-  sessions []Session
+  sessions []GameSession
 }
 
-type Session struct {
+type GameSession struct {
   player *Player
   board *Board
 }
 
 
 func (g *Game) AddPlayer(player *Player) {
-  s := new(Session)
+  s := new(GameSession)
   s.board = new(Board)
   s.player = player
   
   g.sessions = append(g.sessions, *s)
 }
 
-func (s *Session) HandleKey(key string) {
+func (s *GameSession) HandleKey(key string) {
   switch key {
   case "h":
     fmt.Println(s.player.id, " LEFT!")
@@ -50,6 +50,6 @@ func (s *Session) HandleKey(key string) {
   }
 }
 
-func (s *Session) Start() {
+func (s *GameSession) Start() {
   s.board.AddShape()
 }
