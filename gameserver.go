@@ -69,9 +69,13 @@ func (b *Board) ToJson() (result []byte) {
 
 
 func main() {
-	http.Handle("/tetris", websocket.Handler(GameServer));
-	err := http.ListenAndServe(":4000", nil);
-	if err != nil {
-		panic("ListenAndServe: " + err.String())
-	}
+  if terminalFlag {
+    PlayTerminal()
+  } else {
+    http.Handle("/tetris", websocket.Handler(GameServer));
+    err := http.ListenAndServe(":4000", nil);
+    if err != nil {
+      panic("ListenAndServe: " + err.String())
+    }
+  }
 }

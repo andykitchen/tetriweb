@@ -141,18 +141,7 @@ func (b *Board) Tick() {
 	if CheckShapeOverlap(b, nextX, b.sy) {
 		b.updateShapeToBoard()
 
-		b.play_shape = getRandomShape()
-		startX := HEIGHT - 2
-		b.sy = WIDTH / 2
-
-		for {
-			if !CheckShapeOverlap(b, startX, b.sy) {
-				break
-			}
-			startX--
-		}
-		b.sx = startX
-
+    b.AddShape()
 	}
 }
 
@@ -229,4 +218,18 @@ func (b *Board) GetBoardState() []int {
 		}
 	}
 	return result
+}
+
+func (b *Board) AddShape() {
+  b.play_shape = getRandomShape()
+  startX := HEIGHT - 2
+  b.sy = WIDTH / 2
+
+  for {
+    if !CheckShapeOverlap(b, startX, b.sy) {
+      break
+    }
+    startX--
+  }
+  b.sx = startX
 }

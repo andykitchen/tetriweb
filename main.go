@@ -1,12 +1,20 @@
 package main
 
 import (
+  "flag"
 	"os"
 	"fmt"
 	"rand"
 	"exec"
 	// "syscall"
 )
+
+var terminalFlag bool
+func init() {
+	flag.BoolVar(&terminalFlag, "t", false, "Starts terminal game")
+  flag.Parse()
+}
+
 
 func abs(i int) (j int) {
 	if i < 0 {
@@ -19,27 +27,23 @@ func abs(i int) (j int) {
 }
 
 func PlayTerminal() {
-	b := NewBoard()
-
-	// for j := 3; j < 8; j++ {
-	// 	b.setCell(j, 2, 1)
-	// 	b.setCell(j, 1, 1)
-	// }
-	// 
-	// b.FillLine(2)
-	b.play_shape = NewShape(T_SHAPE)
-	b.play_shape.RotateClockwise()
-	b.sx = 15
-	b.sy = 6
-
+  g := new(Game)
+  p := new(Player)
+  p.id = 1
+  p.name = "Test"
+  
+  g.AddPlayer(p)
+  session := g.sessions[0]
+  session.Start()
 	ticks := 0
 	rand.Seed(1)
 	exec.Run("/bin/stty", []string{"stty", "-icanon", "min", "1", "-echo"},
 		nil, "", exec.PassThrough, exec.PassThrough, exec.PassThrough)
 	for {
 
-		fmt.Print(b.String())
+		fmt.Print(session.board.String())
 		fmt.Print(ticks, "------------------\n")
+
 		// syscall.Sleep(1000000000)
 		buf := make([]byte, 1)
 		_, err := os.Stdin.Read(buf)
@@ -49,26 +53,10 @@ func PlayTerminal() {
 		}
 
 		s := string(buf)
+    
+    session.HandleKey(s)
 
-		switch s {
-		case "h":
-			fmt.Println("LEFT!")
-			b.MoveLeft()
-		case "l":
-			fmt.Println("RIGHT!")
-			b.MoveRight()
-		case "j":
-			fmt.Println("DOWN!")
-			b.MoveDown()
-		case "u":
-			fmt.Println("ROTATE!")
-			b.RotateCounterClockwise()
-		case "o":
-			fmt.Println("ROTATE!")
-			b.RotateClockwise()
-		}
-
-		b.Tick()
+		session.board.Tick()
 		ticks++
 	}
 
