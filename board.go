@@ -1,5 +1,9 @@
 package main
 
+import (
+	"strconv"
+)
+
 const (
 	WIDTH   = 10
 	HEIGHT  = 20
