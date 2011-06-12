@@ -86,3 +86,59 @@ func TestMoveShapeDown(t *testing.T) {
 		t.Errorf("invalid move down")
 	}
 }
+
+func TestCheckShapeOverlapLine(t *testing.T) {
+	b := new(Board)
+
+	b.FillLine(2)
+	b.play_shape = NewShape(T_SHAPE)
+
+	b.sx = 4
+	b.sy = 5
+
+	result := CheckShapeOverlap(b, 4, 5)
+
+	if result == true {
+		t.Errorf("Should be no overlap")
+	}
+
+	result = CheckShapeOverlap(b, 3, 5)
+
+	if result != true {
+		t.Errorf("Should be overlap")
+	}
+}
+
+func TestCheckShapeOverlapBlock(t *testing.T) {
+	b := new(Board)
+
+	b.FillLine(2)
+
+	for j := 3; j < 8; j++ {
+		b.setCell(j, 2, 1)
+		b.setCell(j, 1, 1)
+	}
+
+	b.play_shape = NewShape(T_SHAPE)
+	b.play_shape.RotateClockwise()
+	b.sx = 8
+	b.sy = 3
+
+	result := CheckShapeOverlap(b, 8, 3)
+
+	if result == true {
+		t.Errorf("Should be no overlap")
+	}
+
+	result = CheckShapeOverlap(b, 7, 3)
+
+	if result != true {
+		t.Errorf("Should be overlap down")
+	}
+
+	result = CheckShapeOverlap(b, 8, 2)
+
+	if result != true {
+		t.Errorf("Should be overlap left")
+	}
+}

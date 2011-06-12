@@ -40,6 +40,12 @@ func (b *Board) setCell(i, j, k int) {
 	b.cells[i*WIDTH+j] = k
 }
 
+func (b *Board) FillLine(y int) {
+	for j := 0; j < WIDTH; j++ {
+		b.setCell(y, j, 1)
+	}
+}
+
 func (b *Board) checkRowFull(i int) (r bool) {
 	r = true
 
@@ -75,19 +81,23 @@ func (b *Board) removeRow(row int) {
 	b.clearRow(HEIGHT - 1)
 }
 
-// func (b *Board) checkShapeCollision() bool {
-// 	for i = 0; i < HEIGHT; i++ {
-// 		for j = 0; j < WIDTH; j++ {
-// 		ox, oy := b.sx - i, b.sy - j;
-// 		if abs(ox) <= 2 && abs(oy) <= 2 {
-// 			k = b.play_shape.GetCell(ox, oy)
-// 			if k > 0 && b.getCellRaw(i, j) > 0 {
-// 				return true
-// 			}
-// 		}
-// 	}
-// 	return false
-// }
+func CheckShapeOverlap(b *Board, newX int, newY int) bool {
+	for i := 0; i < HEIGHT; i++ {
+		for j := 0; j < WIDTH; j++ {
+			ox, oy := newX-i, newY-j
+
+			if abs(ox) <= 2 && abs(oy) <= 2 {
+				k := b.play_shape.GetCell(ox, oy)
+				if k > 0 && b.getCellRaw(i, j) > 0 {
+					return true
+				}
+			}
+
+		}
+	}
+
+	return false
+}
 
 func (b *Board) String() (s string) {
 	for i := HEIGHT - 1; i >= 0; i-- {

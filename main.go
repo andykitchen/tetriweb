@@ -23,14 +23,16 @@ func abs(i int) (j int) {
 func main() {
 	b := NewBoard()
 
-	//	for j := 0; j < WIDTH; j++ {
-	//		b.setCell(2, j, 1)
-	//	}
-	//
-	b.play_shape = NewShape(T_SHAPE)
+	for j := 3; j < 8; j++ {
+		b.setCell(j, 2, 1)
+		b.setCell(j, 1, 1)
+	}
 
-	b.sx = 10
-	b.sy = 5
+	b.FillLine(2)
+	b.play_shape = NewShape(T_SHAPE)
+	b.play_shape.RotateClockwise()
+	b.sx = 12
+	b.sy = 3
 
 	var s string
 	for {
