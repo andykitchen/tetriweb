@@ -1,8 +1,10 @@
 package main
 
 import (
+	"os"
 	"fmt"
 	"rand"
+	"exec"
 	// "syscall"
 )
 
@@ -24,30 +26,34 @@ func abs(i int) (j int) {
 func main() {
 	b := NewBoard()
 
-	for j := 3; j < 8; j++ {
-		b.setCell(j, 2, 1)
-		b.setCell(j, 1, 1)
-	}
-
-	b.FillLine(2)
+	// for j := 3; j < 8; j++ {
+	// 	b.setCell(j, 2, 1)
+	// 	b.setCell(j, 1, 1)
+	// }
+	// 
+	// b.FillLine(2)
 	b.play_shape = NewShape(T_SHAPE)
 	b.play_shape.RotateClockwise()
-	b.sx = 5
+	b.sx = 15
 	b.sy = 6
 
 	ticks := 0
 	rand.Seed(1)
-	var s string
+	exec.Run("/bin/stty", []string{"stty","-icanon","min","1","-echo"},
+					nil, "", exec.PassThrough, exec.PassThrough, exec.PassThrough)
 	for {
 
 		fmt.Print(b.String())
 		fmt.Print(ticks, "------------------\n")
 		// syscall.Sleep(1000000000)
-		_, err := fmt.Scanf("%s", &s)
+		buf := make([]byte, 1)
+		_, err := os.Stdin.Read(buf)
 		if err != nil {
 			fmt.Println(err.String())
 			return
 		}
+
+		s := string(buf)
 
 		switch s {
 		case "h":
@@ -70,4 +76,5 @@ func main() {
 		b.Tick()
 		ticks++
 	}
+	
 }

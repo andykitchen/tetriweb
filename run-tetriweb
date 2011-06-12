@@ -1,0 +1,4 @@
+#!/bin/bash
+save_state=$(stty -g)
+./tetriweb
+stty "$save_state"
