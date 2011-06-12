@@ -58,6 +58,10 @@ func PlayTerminal() {
     session.HandleKey(s)
 
 		session.board.Tick()
+
+    if (session.board.state == FINISHED) {
+      fmt.Println("FINISHED") 
+    }
 		ticks++
 	}
 

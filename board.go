@@ -13,11 +13,18 @@ const (
 	TICKS_TO_GRAV = 3
 )
 
+const (
+  BLANK = iota
+  PLAYING
+  FINISHED
+)
+
 type Board struct {
 	cells      [WIDTH * HEIGHT]int
 	sx, sy     int
 	play_shape *Shape
 	next_shape *Shape
+  state      int
 }
 
 func NewBoard() (b Board) {
@@ -129,6 +136,8 @@ func (b *Board) String() (s string) {
 var _ticks_betweent_grav int = 0
 
 func (b *Board) Tick() {
+  if b.state == FINISHED {return}
+  b.state = PLAYING
 
 	if _ticks_betweent_grav == 3 {
 		b.MoveDown()
@@ -141,7 +150,8 @@ func (b *Board) Tick() {
 	if CheckShapeOverlap(b, nextX, b.sy) {
 		b.updateShapeToBoard()
 
-    b.AddShape()
+    n := b.AddShape()
+    if n > 0 {b.state = FINISHED}
 	}
 }
 
@@ -220,18 +230,20 @@ func (b *Board) GetBoardState() []int {
 	return result
 }
 
-func (b *Board) AddShape() {
+func (b *Board) AddShape() (n int) {
   b.play_shape = getRandomShape()
   startX := HEIGHT - 2
   b.sy = WIDTH / 2
-
+  n = 0
   for {
     if !CheckShapeOverlap(b, startX, b.sy) {
       break
     }
     startX--
+    n ++ 
   }
   b.sx = startX
+  return n
 }
 
 func (b *Board) DropShape() {
