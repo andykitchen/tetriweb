@@ -85,14 +85,21 @@ func (b *Board) removeRow(row int) {
 }
 
 func CheckShapeOverlap(b *Board, newX int, newY int) bool {
-	for i := 0; i < HEIGHT; i++ {
-		for j := 0; j < WIDTH; j++ {
+	for i := -1; i < HEIGHT+1; i++ {
+		for j := -1; j < WIDTH+1; j++ {
 			ox, oy := newX-i, newY-j
 
 			if abs(ox) <= 2 && abs(oy) <= 2 {
-				k := b.play_shape.GetCell(ox, oy)
-				if k > 0 && b.getCellRaw(i, j) > 0 {
+				outside_board := i < 0 || i >= HEIGHT || j < 0 || j >= WIDTH
+				shape_filled  := b.play_shape.GetCell(ox, oy) > 0
+				
+				if outside_board && shape_filled {
 					return true
+				} else {
+					cell_filled  := b.getCellRaw(i, j) > 0
+					if cell_filled && shape_filled {
+						return true
+					}
 				}
 			}
 
