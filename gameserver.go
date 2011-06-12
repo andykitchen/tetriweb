@@ -24,11 +24,11 @@ func GameServer(ws *websocket.Conn) {
 	// rand.Seed(1)
 	
 	buf := make([]uint8, 512)
-	
+
+	fmt.Println("New player: ", p.id)
+
 	go func() {
 		for {
-			fmt.Println("Start read")
-
 			n, err := ws.Read(buf)
 			if err != nil {
 				fmt.Println("Websocket read error: ", err.String())
@@ -37,22 +37,20 @@ func GameServer(ws *websocket.Conn) {
 
 			if(n > 0) {
         key := string(buf[:n])
-				fmt.Println("Read key: ", key)
+				// fmt.Println("Read key: ", key)
         session.HandleKey(key)
 			}
 		}
 	}()
 	
 	for {
-		fmt.Println("Start write")
-    //session.HandleKey("l")
 		_, err := ws.Write(session.board.Encode())
 		if err != nil {
 			fmt.Println("Websocket write error: ", err.String())
 			break
 		}
 
-		syscall.Sleep(500000000)
+		syscall.Sleep(100000000)
 		b.Tick()
 	}
 
