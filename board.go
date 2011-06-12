@@ -112,17 +112,26 @@ func (b *Board) String() (s string) {
 }
 
 func (b *Board) Tick() {
-	b.sx -= 1
+	b.MoveDown()
 }
 
 func (b *Board) MoveLeft() {
-	b.sy -= 1
+	nextY := b.sy - 1
+	if !CheckShapeOverlap(b, b.sx, nextY) {
+		b.sy = nextY
+	}
 }
 
 func (b *Board) MoveRight() {
-	b.sy += 1
+	nextY := b.sy + 1
+	if !CheckShapeOverlap(b, b.sx, nextY) {
+		b.sy = nextY
+	}
 }
 
 func (b *Board) MoveDown() {
-	b.sx -= 1
+	nextX := b.sx - 1
+	if !CheckShapeOverlap(b, nextX, b.sy) {
+		b.sx = nextX
+	}
 }

@@ -142,3 +142,39 @@ func TestCheckShapeOverlapBlock(t *testing.T) {
 		t.Errorf("Should be overlap left")
 	}
 }
+
+func TestCheckShapeMoveOverlap(t *testing.T) {
+	initial_state := "0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0011100000\n0001000000\n0000000000\n0110000000\n0110000000\n0110000000\n0110000000\n0110000000\n1111111111\n0000000000\n0000000000\n"
+
+	expected := "0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0000000000\n0011100000\n0111000000\n0110000000\n0110000000\n0110000000\n0110000000\n1111111111\n0000000000\n0000000000\n"
+
+	b := new(Board)
+
+	b.FillLine(2)
+
+	for j := 3; j < 8; j++ {
+		b.setCell(j, 2, 1)
+		b.setCell(j, 1, 1)
+	}
+
+	b.play_shape = NewShape(T_SHAPE)
+	b.play_shape.RotateClockwise()
+	b.sx = 10
+	b.sy = 3
+
+	state := b.String()
+	if state != initial_state {
+		t.Errorf("Unexpected initial state")
+	}
+
+	b.MoveDown()
+	b.MoveDown()
+	b.MoveDown()
+	b.MoveDown()
+
+	state = b.String()
+	if state != expected {
+		t.Errorf("Unexpected move down state")
+	}
+
+}

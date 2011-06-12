@@ -31,7 +31,7 @@ func main() {
 	b.FillLine(2)
 	b.play_shape = NewShape(T_SHAPE)
 	b.play_shape.RotateClockwise()
-	b.sx = 12
+	b.sx = 10
 	b.sy = 3
 
 	var s string
