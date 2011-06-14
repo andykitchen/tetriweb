@@ -10,29 +10,29 @@ import (
 )
 
 var (
-	counter int
-	game *Game
+	counter    int
+	game       *Game
 	game_mutex sync.Mutex
 )
 
 func GameServer(ws *websocket.Conn) {
-  if counter > 10 {
-    fmt.Println("Max number of players reached")
-    return
-  }
+	if counter > 10 {
+		fmt.Println("Max number of players reached")
+		return
+	}
 
-  p := new(Player)
-  p.id = counter
-  p.name = "Test"
+	p := new(Player)
+	p.id = counter
+	p.name = "Test"
 
 	// TODO restructure code to remove mutex, use channels instead
 	game_mutex.Lock()
 	session := game.AddPlayer(p)
-  session.Start()
+	session.Start()
 	game_mutex.Unlock()
 
 	fmt.Println("New player: ", p.id)
-  counter += 1
+	counter += 1
 
 	buf := make([]uint8, 512)
 
@@ -44,24 +44,24 @@ func GameServer(ws *websocket.Conn) {
 				return // end goroutine
 			}
 
-			if(n > 0) {
-        key := string(buf[:n])
+			if n > 0 {
+				key := string(buf[:n])
 				game_mutex.Lock()
-        session.HandleKey(key)
+				session.HandleKey(key)
 				game_mutex.Unlock()
 			}
 		}
 	}()
-	
+
 	for {
 		game_mutex.Lock()
-    for i := 0; i < len(game.sessions); i++ {
-      _, err := ws.Write(game.sessions[i].Encode())
-      if err != nil {
-        fmt.Println("Websocket write error: ", err.String())
-        return // end handler
-      }
-    }
+		for i := 0; i < len(game.sessions); i++ {
+			_, err := ws.Write(game.sessions[i].Encode())
+			if err != nil {
+				fmt.Println("Websocket write error: ", err.String())
+				return // end handler
+			}
+		}
 		session.board.Tick()
 		game_mutex.Unlock()
 
@@ -88,16 +88,16 @@ func (b *Board) ToJson() (result []byte) {
 
 
 func main() {
-  game = new(Game)
-  fmt.Println("starting game...")
+	game = new(Game)
+	fmt.Println("starting game...")
 
-  if terminalFlag {
-    PlayTerminal()
-  } else {
-    http.Handle("/tetris", websocket.Handler(GameServer));
-    err := http.ListenAndServe(":4000", nil);
-    if err != nil {
-      panic("ListenAndServe: " + err.String())
-    }
-  }
+	if terminalFlag {
+		PlayTerminal()
+	} else {
+		http.Handle("/tetris", websocket.Handler(GameServer))
+		err := http.ListenAndServe(":4000", nil)
+		if err != nil {
+			panic("ListenAndServe: " + err.String())
+		}
+	}
 }

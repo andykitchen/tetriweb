@@ -1,7 +1,7 @@
 package main
 
 import (
-  "flag"
+	"flag"
 	"os"
 	"fmt"
 	//"rand"
@@ -10,9 +10,10 @@ import (
 )
 
 var terminalFlag bool
+
 func init() {
 	flag.BoolVar(&terminalFlag, "t", false, "Starts terminal game")
-  flag.Parse()
+	flag.Parse()
 }
 
 
@@ -27,15 +28,15 @@ func abs(i int) (j int) {
 }
 
 func PlayTerminal() {
-  //rand.Seed(1)
-  g := new(Game)
-  p := new(Player)
-  p.id = 1
-  p.name = "Test"
-  
-  g.AddPlayer(p)
-  session := g.sessions[0]
-  session.Start()
+	//rand.Seed(1)
+	g := new(Game)
+	p := new(Player)
+	p.id = 1
+	p.name = "Test"
+
+	g.AddPlayer(p)
+	session := g.sessions[0]
+	session.Start()
 	ticks := 0
 	//rand.Seed(1)
 	exec.Run("/bin/stty", []string{"stty", "-icanon", "min", "1", "-echo"},
@@ -54,14 +55,14 @@ func PlayTerminal() {
 		}
 
 		s := string(buf)
-    
-    session.HandleKey(s)
+
+		session.HandleKey(s)
 
 		session.board.Tick()
 
-    if (session.board.state == FINISHED) {
-      fmt.Println("FINISHED") 
-    }
+		if session.board.state == FINISHED {
+			fmt.Println("FINISHED")
+		}
 		ticks++
 	}
 

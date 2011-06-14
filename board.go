@@ -14,18 +14,18 @@ const (
 )
 
 const (
-  BLANK = iota
-  PLAYING
-  FINISHED
+	BLANK = iota
+	PLAYING
+	FINISHED
 )
 
 type Board struct {
-	cells      [WIDTH * HEIGHT]int
-	sx, sy     int
-	play_shape *Shape
-	next_shape *Shape
-  state      int
-  _ticks_betweent_grav int
+	cells                [WIDTH * HEIGHT]int
+	sx, sy               int
+	play_shape           *Shape
+	next_shape           *Shape
+	state                int
+	_ticks_betweent_grav int
 }
 
 func NewBoard() (b Board) {
@@ -137,7 +137,7 @@ func (b *Board) String() (s string) {
 func (b *Board) Encode(player_id int) (data []uint8) {
 	data = make([]uint8, WIDTH*HEIGHT+1)
 	var n int
-  data[0] = strconv.Itoa(player_id)[0]
+	data[0] = strconv.Itoa(player_id)[0]
 	n = 1
 	for i := 0; i < HEIGHT; i++ {
 		for j := 0; j < WIDTH; j++ {
@@ -151,10 +151,11 @@ func (b *Board) Encode(player_id int) (data []uint8) {
 }
 
 
-
 func (b *Board) Tick() {
-  if b.state == FINISHED {return}
-  b.state = PLAYING
+	if b.state == FINISHED {
+		return
+	}
+	b.state = PLAYING
 
 	if b._ticks_betweent_grav == 5 {
 		b.MoveDown()
@@ -167,11 +168,13 @@ func (b *Board) Tick() {
 	if CheckShapeOverlap(b, nextX, b.sy) {
 		b.updateShapeToBoard()
 
-    n := b.AddShape()
-    if n > 0 {b.state = FINISHED}
+		n := b.AddShape()
+		if n > 0 {
+			b.state = FINISHED
+		}
 	}
-	
-	for row := HEIGHT-1; row >= 0; row-- {
+
+	for row := HEIGHT - 1; row >= 0; row-- {
 		if b.checkRowFull(row) {
 			b.removeRow(row)
 		}
@@ -254,31 +257,31 @@ func (b *Board) GetBoardState() []int {
 }
 
 func (b *Board) AddShape() (n int) {
-  b.play_shape = getRandomShape()
-  startX := HEIGHT - 2
-  b.sy = WIDTH / 2
-  n = 0
-  for {
-    if !CheckShapeOverlap(b, startX, b.sy) {
-      break
-    }
-    startX--
-    n ++ 
-  }
-  b.sx = startX
-  return n
+	b.play_shape = getRandomShape()
+	startX := HEIGHT - 2
+	b.sy = WIDTH / 2
+	n = 0
+	for {
+		if !CheckShapeOverlap(b, startX, b.sy) {
+			break
+		}
+		startX--
+		n++
+	}
+	b.sx = startX
+	return n
 }
 
 func (b *Board) DropShape() {
-  i := 0
-  nextX := 0
-  for {
-    nextX = b.sx - i
-	  if CheckShapeOverlap(b, nextX, b.sy) {
-		  i -= 1
-      break;
-	  }
-    i++
-  }
-  b.sx -= i
+	i := 0
+	nextX := 0
+	for {
+		nextX = b.sx - i
+		if CheckShapeOverlap(b, nextX, b.sy) {
+			i -= 1
+			break
+		}
+		i++
+	}
+	b.sx -= i
 }
