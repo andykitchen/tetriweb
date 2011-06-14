@@ -20,10 +20,6 @@
     var socket = new WebSocket('ws://localhost:4000/tetris')
 
     socket.onopen = function () {
-//      setInterval(function() {
-//          if (socket.bufferedAmount == 0)
-//            socket.send("h");
-//      }, 1000);
     };
 
     socket.onclose = function () {
@@ -32,7 +28,7 @@
     }
 
     socket.onmessage = function (msg) {
-      document.getElementById("text-canvas").innerHTML = msg.data
+      // document.getElementById("text-canvas").innerHTML = msg.data
       redraw(msg.data)
     }
     

@@ -6,9 +6,14 @@ import (
 	"json"
 	"http"
 	"syscall"
+	"sync"
 )
-var counter int
-var game *Game
+
+var (
+	counter int
+	game *Game
+	game_mutex sync.Mutex
+)
 
 func GameServer(ws *websocket.Conn) {
   if counter > 10 {
@@ -19,46 +24,49 @@ func GameServer(ws *websocket.Conn) {
   p := new(Player)
   p.id = counter
   p.name = "Test"
-  
-  session := game.AddPlayer(p)
-  session.Start()
-  b := session.board
 
-	buf := make([]uint8, 512)
+	// TODO restructure code to remove mutex, use channels instead
+	game_mutex.Lock()
+	session := game.AddPlayer(p)
+  session.Start()
+	game_mutex.Unlock()
 
 	fmt.Println("New player: ", p.id)
   counter += 1
+
+	buf := make([]uint8, 512)
 
 	go func() {
 		for {
 			n, err := ws.Read(buf)
 			if err != nil {
 				fmt.Println("Websocket read error: ", err.String())
-				break
+				return // end goroutine
 			}
 
 			if(n > 0) {
         key := string(buf[:n])
-				// fmt.Println("Read key: ", key)
+				game_mutex.Lock()
         session.HandleKey(key)
+				game_mutex.Unlock()
 			}
 		}
 	}()
 	
 	for {
+		game_mutex.Lock()
     for i := 0; i < len(game.sessions); i++ {
       _, err := ws.Write(game.sessions[i].Encode())
       if err != nil {
         fmt.Println("Websocket write error: ", err.String())
-        break
+        return // end handler
       }
     }
+		session.board.Tick()
+		game_mutex.Unlock()
 
 		syscall.Sleep(100000000)
-		b.Tick()
 	}
-
-	
 }
 
 type PlayerBoard struct {

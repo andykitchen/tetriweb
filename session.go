@@ -12,7 +12,6 @@ type Player struct {
 }
 
 type Game struct {
-	
   sessions []GameSession
 }
 
