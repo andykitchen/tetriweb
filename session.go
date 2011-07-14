@@ -62,3 +62,7 @@ func (s *GameSession) Encode() []byte {
 	encodedBoard := s.board.Encode(s.player.id)
 	return encodedBoard
 }
+
+func (s *GameSession) Tick() {
+	s.board.Tick()
+}

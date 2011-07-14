@@ -54,7 +54,7 @@ func GameServer(ws *websocket.Conn) {
 				return // end handler
 			}
 		}
-		session.board.Tick()
+		session.Tick()
 
 		syscall.Sleep(100000000)
 	}
@@ -77,6 +77,15 @@ func (b *Board) ToJson() (result []byte) {
 	return
 }
 
+// type playerHandler struct {
+// 	player Player
+// 	keys chan string
+// 	board 
+// }
+// 
+// func gameserver(new_players chan Player) {
+// 	
+// }
 
 func main() {
 	game = new(Game)
