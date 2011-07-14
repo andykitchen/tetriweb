@@ -6,13 +6,11 @@ import (
 	"json"
 	"http"
 	"syscall"
-	"sync"
 )
 
 var (
 	counter    int
 	game       *Game
-	game_mutex sync.Mutex
 )
 
 func GameServer(ws *websocket.Conn) {
@@ -25,11 +23,8 @@ func GameServer(ws *websocket.Conn) {
 	p.id = counter
 	p.name = "Test"
 
-	// TODO restructure code to remove mutex, use channels instead
-	game_mutex.Lock()
 	session := game.AddPlayer(p)
 	session.Start()
-	game_mutex.Unlock()
 
 	fmt.Println("New player: ", p.id)
 	counter += 1
@@ -46,15 +41,12 @@ func GameServer(ws *websocket.Conn) {
 
 			if n > 0 {
 				key := string(buf[:n])
-				game_mutex.Lock()
 				session.HandleKey(key)
-				game_mutex.Unlock()
 			}
 		}
 	}()
 
 	for {
-		game_mutex.Lock()
 		for i := 0; i < len(game.sessions); i++ {
 			_, err := ws.Write(game.sessions[i].Encode())
 			if err != nil {
@@ -63,7 +55,6 @@ func GameServer(ws *websocket.Conn) {
 			}
 		}
 		session.board.Tick()
-		game_mutex.Unlock()
 
 		syscall.Sleep(100000000)
 	}
