@@ -58,7 +58,7 @@ func (s *GameSession) Start() {
 	s.board.AddShape()
 }
 
-func (s *GameSession) Encode() []uint8 {
+func (s *GameSession) Encode() []byte {
 	encodedBoard := s.board.Encode(s.player.id)
 	return encodedBoard
 }

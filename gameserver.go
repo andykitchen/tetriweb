@@ -34,7 +34,7 @@ func GameServer(ws *websocket.Conn) {
 	fmt.Println("New player: ", p.id)
 	counter += 1
 
-	buf := make([]uint8, 512)
+	buf := make([]byte, 512)
 
 	go func() {
 		for {
