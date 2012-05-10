@@ -1,8 +1,8 @@
 package main
 
 import (
+	"math/rand"
 	"strconv"
-	"rand"
 )
 
 const (
@@ -149,7 +149,6 @@ func (b *Board) Encode(player_id int) (data []byte) {
 
 	return
 }
-
 
 func (b *Board) Tick() {
 	if b.state == FINISHED {

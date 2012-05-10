@@ -1,9 +1,9 @@
 package main
 
 import (
-	"testing"
-	"rand"
 	"fmt"
+	"math/rand"
+	"testing"
 	//"strconv"
 )
 
@@ -260,7 +260,6 @@ func TestGetNextRandomShape(t *testing.T) {
 
 func TestCheckShapeMoveOverEdgeOfBoard(t *testing.T) {
 	//TODO
-
 
 }
 

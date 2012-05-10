@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"rand"
+	"math/rand"
 	"time"
 )
 
@@ -19,7 +19,6 @@ type GameSession struct {
 	player *Player
 	board  *Board
 }
-
 
 func (g *Game) AddPlayer(player *Player) (s *GameSession) {
 	s = new(GameSession)
@@ -54,7 +53,7 @@ func (s *GameSession) HandleKey(key string) {
 }
 
 func (s *GameSession) Start() {
-	rand.Seed(time.Seconds())
+	rand.Seed(time.Now())
 	s.board.AddShape()
 }
 

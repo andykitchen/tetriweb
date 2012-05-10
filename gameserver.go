@@ -1,10 +1,10 @@
 package main
 
 import (
-	"websocket"
-	"http"
 	"fmt"
+	"net/http"
 	"time"
+	"code.google.com/p/go.net/websocket"
 	// "syscall"
 )
 
@@ -21,14 +21,14 @@ func newWebSocketHandler(connections chan Conn) websocket.Handler {
 	return func(ws *websocket.Conn) {
 		done := make(chan int)
 		connections <- Conn{ws, done}
-		<- done
+		<-done
 	}
 }
 
 type Broadcaster struct {
 	subscriptions chan chan GameSession
-	writes []chan GameSession
-	send chan GameSession
+	writes        []chan GameSession
+	send          chan GameSession
 }
 
 func newBroadcaster() (b *Broadcaster) {
@@ -36,20 +36,20 @@ func newBroadcaster() (b *Broadcaster) {
 	b.subscriptions = make(chan chan GameSession)
 	b.writes = make([]chan GameSession, 0)
 	b.send = make(chan GameSession)
-	
+
 	go func() {
 		for {
 			select {
-			case sub := <- b.subscriptions:
+			case sub := <-b.subscriptions:
 				b.writes = append(b.writes, sub)
-			case data := <- b.send:
+			case data := <-b.send:
 				for _, x := range b.writes {
 					x <- data
 				}
 			}
 		}
 	}()
-	
+
 	return
 }
 
@@ -65,15 +65,15 @@ func gameserver(connections chan Conn) {
 
 	for {
 		select {
-		case conn := <- connections:
+		case conn := <-connections:
 			session := GameSession{&Player{player_count, "foo"}, &Board{}}
 			session.Start() // required initialization
 			sessions = append(sessions, session)
 			player_count++
-			
+
 			go func() {
 				buf := make([]byte, 512)
-				
+
 				for {
 					n, err := conn.Read(buf)
 					if err != nil {
@@ -88,13 +88,13 @@ func gameserver(connections chan Conn) {
 					}
 				}
 			}()
-			
+
 			session_chan := make(chan GameSession)
 			broadcast.Subscribe(session_chan)
 
 			go func() {
 				for {
-					session := <- session_chan
+					session := <-session_chan
 					_, err := conn.Write(session.Encode())
 					if err != nil {
 						fmt.Println("Websocket write error: ", err.String())
@@ -103,14 +103,14 @@ func gameserver(connections chan Conn) {
 				}
 			}()
 
-		case <- ticker.C:
+		case <-ticker.C:
 			for _, session := range sessions {
 				session.Tick()
 				broadcast.send <- session
 			}
 		}
 	}
-	
+
 	ticker.Stop()
 }
 

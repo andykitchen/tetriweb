@@ -2,10 +2,10 @@ package main
 
 import (
 	"flag"
-	"os"
 	"fmt"
+	"os"
 	//"rand"
-	"exec"
+	"os/exec"
 	// "syscall"
 )
 
@@ -15,7 +15,6 @@ func init() {
 	flag.BoolVar(&terminalFlag, "t", false, "Starts terminal game")
 	flag.Parse()
 }
-
 
 func abs(i int) (j int) {
 	if i < 0 {
