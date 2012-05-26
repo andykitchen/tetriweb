@@ -77,7 +77,7 @@ func gameserver(connections chan Conn) {
 				for {
 					n, err := conn.Read(buf)
 					if err != nil {
-						fmt.Println("Websocket read error: ", err.String())
+						fmt.Println("Websocket read error: ", err)
 						return // end goroutine
 					}
 
@@ -97,7 +97,7 @@ func gameserver(connections chan Conn) {
 					session := <-session_chan
 					_, err := conn.Write(session.Encode())
 					if err != nil {
-						fmt.Println("Websocket write error: ", err.String())
+						fmt.Println("Websocket write error: ", err)
 						return // end goroutine
 					}
 				}
@@ -122,6 +122,6 @@ func main() {
 	http.Handle("/tetris", newWebSocketHandler(connections))
 	err := http.ListenAndServe(":4000", nil)
 	if err != nil {
-		panic("ListenAndServe: " + err.String())
+		panic("ListenAndServe: " + err.Error())
 	}
 }

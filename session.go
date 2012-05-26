@@ -53,7 +53,7 @@ func (s *GameSession) HandleKey(key string) {
 }
 
 func (s *GameSession) Start() {
-	rand.Seed(time.Now())
+	rand.Seed(time.Now().Unix())
 	s.board.AddShape()
 }
 

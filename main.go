@@ -49,7 +49,7 @@ func PlayTerminal() {
 		buf := make([]byte, 1)
 		_, err := os.Stdin.Read(buf)
 		if err != nil {
-			fmt.Println(err.String())
+			fmt.Println(err)
 			return
 		}
 
