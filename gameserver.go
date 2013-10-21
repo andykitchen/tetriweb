@@ -114,12 +114,30 @@ func gameserver(connections chan Conn) {
 	ticker.Stop()
 }
 
+
+
+func fileServer(w http.ResponseWriter, req *http.Request) {
+
+	requested_path := req.RequestURI
+
+	if requested_path == "/" {
+		requested_path = "tetriweb.html"
+	}
+
+	w.Header().Set("Server", "Silverpond Tetriweb" )
+
+	//TODO check nadeshiko bundle public and then serve from local public is availible
+	http.ServeFile(w, req, requested_path)
+
+}
 func main() {
 	connections := make(chan Conn)
 
 	go gameserver(connections)
 
 	http.Handle("/tetris", newWebSocketHandler(connections))
+	http.HandleFunc("/", fileServer)
+
 	err := http.ListenAndServe(":4000", nil)
 	if err != nil {
 		panic("ListenAndServe: " + err.Error())
